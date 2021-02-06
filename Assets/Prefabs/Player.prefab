@@ -1219,7 +1219,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 1096457833009158855, guid: 647478818e1e0e14bb1fe3943976824e,
     type: 3}
   movementSpeed: 5
-  pistolRadius: 1.5
+  pistolRadius: 1.75
   pistolRotationSpeed: 20
 --- !u!61 &4706167498106044139
 BoxCollider2D:

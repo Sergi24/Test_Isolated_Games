@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine;
 using System;
+using Photon.Pun;
 
 public class PlayerControllerClass : MonoBehaviour
 {
     PlayerControls controls;
-    public GameObject pistolPrefab, bulletPrefab;
     public float movementSpeed, pistolRadius;
     public float pistolRotationSpeed;
+    public float limitMoveX, limitMoveY;
 
     private GameObject currentPistol;
     private double pistolAngle;
@@ -31,7 +32,7 @@ public class PlayerControllerClass : MonoBehaviour
     void Start()
     {
         pistolAngle = 0;
-        currentPistol = Instantiate(pistolPrefab, transform.position, Quaternion.identity);
+        currentPistol = PhotonNetwork.Instantiate("Pistol", transform.position, Quaternion.identity);
     }
 
     // Update is called once per frame
@@ -43,14 +44,24 @@ public class PlayerControllerClass : MonoBehaviour
 
     void Shot()
     {
-        GameObject bulletInstantiated = Instantiate(bulletPrefab, currentPistol.transform.position, currentPistol.transform.rotation);
-        bulletInstantiated.transform.Rotate(Vector3.forward, -90);
+        Quaternion bulletRotation = Quaternion.AngleAxis((float)pistolAngle - 90, Vector3.forward);
+        PhotonNetwork.Instantiate("Bullet", currentPistol.transform.position, bulletRotation);
     }
 
     void MovePlayer()
     {
-        float moveX = movementSpeed * move.x * Time.deltaTime;
-        float moveY = movementSpeed * move.y * Time.deltaTime;
+        float moveX;
+        float moveY;
+
+        //screen limits
+        if (transform.position.x < -limitMoveX && move.x < 0) moveX = 0;
+        else if (transform.position.x > limitMoveX && move.x > 0) moveX = 0;
+        else moveX = movementSpeed * move.x * Time.deltaTime;
+
+        if (transform.position.y < -limitMoveY && move.y < 0) moveY = 0;
+        else if (transform.position.y > limitMoveY && move.y > 0) moveY = 0;
+        else moveY = movementSpeed * move.y * Time.deltaTime;
+
         transform.Translate(new Vector3(moveX, moveY));
     }
 

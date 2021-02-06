@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -35,6 +36,24 @@ public class LifeManager : MonoBehaviour
         if (life == 2) setHeartsColor(true, true, false);
         else if (life == 1) setHeartsColor(true, false, false);
         else setHeartsColor(false, false, false);
+
+        CallSetting();
+    }
+
+    [PunRPC]
+    void SettingLife(int someValue)
+    {
+        life = someValue;
+
+        if (life == 2) setHeartsColor(true, true, false);
+        else if (life == 1) setHeartsColor(true, false, false);
+        else setHeartsColor(false, false, false);
+    }
+
+    void CallSetting()
+    {
+        PhotonView PV = GetComponent<PhotonView>();
+        PV.RPC("SettingLife", RpcTarget.All, life);
     }
 
     void OnTriggerEnter2D(Collider2D collider)

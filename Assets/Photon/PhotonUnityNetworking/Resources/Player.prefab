@@ -1259,8 +1259,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 6
-  pistolRadius: 1.75
-  pistolRotationSpeed: 20
   limitMoveX: 8
   limitMoveY: 4
 --- !u!114 &1251902107613438180

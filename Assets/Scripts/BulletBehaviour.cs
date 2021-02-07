@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +10,12 @@ public class BulletBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Destroy(gameObject, 2);
+        Invoke("DestroyBullet", 2);
+    }
+
+    void DestroyBullet()
+    {
+        PhotonNetwork.Destroy(gameObject);
     }
 
     // Update is called once per frame

@@ -29,21 +29,10 @@ public class LifeManager : MonoBehaviour
         setHeartColor(heartPosition3, heart3);
     }
 
-    void removeLife()
+    [PunRPC]
+    void RPCRemoveLife()
     {
         life -= 1;
-
-        if (life == 2) setHeartsColor(true, true, false);
-        else if (life == 1) setHeartsColor(true, false, false);
-        else setHeartsColor(false, false, false);
-
-        CallSetting();
-    }
-
-    [PunRPC]
-    void SettingLife(int someValue)
-    {
-        life = someValue;
 
         if (life == 2) setHeartsColor(true, true, false);
         else if (life == 1) setHeartsColor(true, false, false);
@@ -53,15 +42,15 @@ public class LifeManager : MonoBehaviour
     void CallSetting()
     {
         PhotonView PV = GetComponent<PhotonView>();
-        PV.RPC("SettingLife", RpcTarget.All, life);
+        PV.RPC("RPCRemoveLife", RpcTarget.All);
     }
 
     void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.tag == "Bullet")
         {
-            Destroy(collider.gameObject);
-            removeLife();
+            PhotonNetwork.Destroy(collider.gameObject);
+            CallSetting();
         }
     }
 }

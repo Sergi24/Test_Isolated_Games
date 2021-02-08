@@ -11,6 +11,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     void Awake()
     {
         PhotonNetwork.ConnectUsingSettings();
+
+        PhotonNetwork.AutomaticallySyncScene = true;
     }
 
     public override void OnConnectedToMaster()

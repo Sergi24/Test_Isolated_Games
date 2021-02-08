@@ -16,6 +16,7 @@ public class LifeManager : MonoBehaviour
         setHeartsColor(true, true, true);
     }
 
+
     void setHeartColor(GameObject gameObject, bool actived)
     {
         if (actived) gameObject.GetComponent<SpriteRenderer>().color = heartInitialColor;
@@ -43,18 +44,13 @@ public class LifeManager : MonoBehaviour
         }
     }
 
-    void CallSetting()
-    {
-        PhotonView PV = GetComponent<PhotonView>();
-        PV.RPC("RPCRemoveLife", RpcTarget.All);
-    }
 
     void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.tag == "Bullet")
         {
-            PhotonNetwork.Destroy(collider.gameObject);
-            CallSetting();
+            PhotonView PV = GetComponent<PhotonView>();
+            PV.RPC("RPCRemoveLife", RpcTarget.All);
         }
     }
 }

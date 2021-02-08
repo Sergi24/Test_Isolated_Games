@@ -22,6 +22,14 @@ public class BulletBehaviour : MonoBehaviour
     void Update()
     {
         transform.Translate(speed * Vector3.up * Time.deltaTime);
-        speed += acceleration * Time.deltaTime;
+        //speed += acceleration * Time.deltaTime;
+    }
+
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.gameObject.tag == "Player")
+        {
+            PhotonNetwork.Destroy(gameObject);
+        }
     }
 }

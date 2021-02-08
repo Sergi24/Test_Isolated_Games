@@ -26,6 +26,7 @@ public class PistolBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //trajectory line
         RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right);
         lineRenderer.SetPosition(0, transform.position);
         if (hit.collider == null) lineRenderer.SetPosition(1, transform.position + (20 * transform.right));
@@ -70,32 +71,36 @@ public class PistolBehaviour : MonoBehaviour
         if (aim != Vector2.zero)
         {
             double angleDestination = Math.Atan2(aim.y, aim.x) * Mathf.Rad2Deg;
+            if (angleDestination < 0) angleDestination += 360;
+
             float timeFraction = pistolRotationSpeed * Time.deltaTime;
             //force range [0..360]
-            if (angleDestination < 0) angleDestination += 360;
             double absDistance = Math.Abs(angleDestination - pistolAngle);
-            if (absDistance < 180)
+            if (Math.Abs(angleDestination - pistolAngle) > 5)
             {
-                pistolAngle = Mathf.Lerp((float)pistolAngle, (float)angleDestination, timeFraction);
-            }
-            else
-            {
-                double realDistance = 360 - absDistance;
-                if (angleDestination - pistolAngle > 0)
+                if (absDistance < 180)
                 {
-                    pistolAngle -= realDistance * timeFraction;
+                    pistolAngle = Mathf.Lerp((float)pistolAngle, (float)angleDestination, timeFraction);
                 }
                 else
                 {
-                    pistolAngle += realDistance * timeFraction;
+                    double realDistance = 360 - absDistance;
+                    if (angleDestination - pistolAngle > 0)
+                    {
+                        pistolAngle -= realDistance * timeFraction;
+                    }
+                    else
+                    {
+                        pistolAngle += realDistance * timeFraction;
+                    }
                 }
+                if (pistolAngle < 0) pistolAngle += 360;
+                pistolAngle %= 360;
+                //Debug.Log(new Vector2((float)pistolAngle, (float)angleDestination));
             }
-            if (pistolAngle < 0) pistolAngle += 360;
-            pistolAngle %= 360;
-            //Debug.Log(new Vector2((float)pistolAngle, (float)angleDestination));
-        }
 
-        GetComponent<PhotonView>().RPC("RPCSetPistolAngle", RpcTarget.Others, pistolAngle);
+            GetComponent<PhotonView>().RPC("RPCSetPistolAngle", RpcTarget.Others, pistolAngle);
+        }
     }
 
     [PunRPC]
@@ -108,10 +113,5 @@ public class PistolBehaviour : MonoBehaviour
     {
         Quaternion bulletRotation = Quaternion.AngleAxis((float)pistolAngle - 90, Vector3.forward);
         PhotonNetwork.Instantiate("Bullet", transform.position, bulletRotation);
-    }
-
-    public double GetPistolAngle()
-    {
-        return pistolAngle;
     }
 }

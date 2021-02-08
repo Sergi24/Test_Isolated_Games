@@ -36,7 +36,11 @@ public class LifeManager : MonoBehaviour
 
         if (life == 2) setHeartsColor(true, true, false);
         else if (life == 1) setHeartsColor(true, false, false);
-        else setHeartsColor(false, false, false);
+        else if (life <= 0)
+        {
+            setHeartsColor(false, false, false);
+            GameManager.instance.GameOverMode();
+        }
     }
 
     void CallSetting()

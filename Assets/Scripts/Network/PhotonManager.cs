@@ -6,30 +6,38 @@ using UnityEngine;
 
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
-    // Start is called before the first frame update
-    void Start()
+    GameObject player;
+
+    void Awake()
     {
         PhotonNetwork.ConnectUsingSettings();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.JoinLobby();
+
+        GameManager.instance.MenuMode();
     }
 
-    public override void OnJoinedLobby()
+    public void JoinRoom()
     {
-        PhotonNetwork.JoinOrCreateRoom("Room", new RoomOptions { MaxPlayers = 2 }, TypedLobby.Default); ;
+        if (CanCreateRoom()) 
+            PhotonNetwork.JoinOrCreateRoom("Room", new RoomOptions { MaxPlayers = 2 }, TypedLobby.Default); ;
+    }
+
+    public bool CanCreateRoom()
+    {
+        return PhotonNetwork.CurrentLobby != null;
     }
 
     public override void OnJoinedRoom()
     {
-        PhotonNetwork.Instantiate("Player", new Vector2(0, 0), Quaternion.identity);
+        player = PhotonNetwork.Instantiate("Player", new Vector2(0, 0), Quaternion.identity);
+    }
+
+    public void LeaveRoom()
+    {
+        if (PhotonNetwork.CurrentRoom != null) PhotonNetwork.LeaveRoom();
     }
 }

@@ -51,7 +51,7 @@ MonoBehaviour:
   pistolSpriteR: {fileID: 4615395810561542989}
   pistolSpriteL: {fileID: 2363207905988282563}
   pistolRadius: 1.75
-  pistolRotationSpeed: 20
+  pistolRotationSpeed: 15
 --- !u!120 &-6557207108072222571
 LineRenderer:
   m_ObjectHideFlags: 0

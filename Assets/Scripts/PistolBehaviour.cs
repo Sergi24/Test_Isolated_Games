@@ -109,9 +109,16 @@ public class PistolBehaviour : MonoBehaviour
         this.pistolAngle = pistolAngle;
     }
 
+    /*[PunRPC]
+    void RPCInstantiateBullet(Vector3 position, Quaternion rotation)
+    {
+        PhotonNetwork.Instantiate("Bullet", position, rotation);
+    }*/
+
     public void Shot()
     {
         Quaternion bulletRotation = Quaternion.AngleAxis((float)pistolAngle - 90, Vector3.forward);
         PhotonNetwork.Instantiate("Bullet", transform.position, bulletRotation);
+        //GetComponent<PhotonView>().RPC("RPCInstantiateBullet", RpcTarget.All, transform.position, bulletRotation);
     }
 }

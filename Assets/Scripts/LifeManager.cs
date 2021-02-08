@@ -10,6 +10,8 @@ public class LifeManager : MonoBehaviour
     public Color heartInitialColor;
     public GameObject heartPosition1, heartPosition2, heartPosition3;
 
+    private GameObject lastBulletHit;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,9 +33,17 @@ public class LifeManager : MonoBehaviour
     }
 
     [PunRPC]
-    void RPCRemoveLife()
+    void RPCRemoveLife(int photonView)
     {
+        PhotonView bulletPhotonView = PhotonNetwork.GetPhotonView(photonView);
+        if (bulletPhotonView != null && bulletPhotonView.IsMine)
+        {
+            PhotonNetwork.Destroy(bulletPhotonView);
+        }
+
         life -= 1;
+
+        Debug.Log("life " + life);
 
         if (life == 2) setHeartsColor(true, true, false);
         else if (life == 1) setHeartsColor(true, false, false);
@@ -44,13 +54,22 @@ public class LifeManager : MonoBehaviour
         }
     }
 
-
     void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.tag == "Bullet")
+        if (GetComponent<PhotonView>().IsMine)
         {
-            PhotonView PV = GetComponent<PhotonView>();
-            PV.RPC("RPCRemoveLife", RpcTarget.All);
+            if (lastBulletHit != collider.gameObject)
+            {
+                if (collider.gameObject.tag == "Bullet")
+                {
+                    lastBulletHit = collider.gameObject;
+
+                    Debug.Log("COLLIDER LIFE MANAGER");
+                    PhotonView PV = GetComponent<PhotonView>();
+                    int bulletPhotonViewId = collider.gameObject.GetComponent<PhotonView>().ViewID;
+                    PV.RPC("RPCRemoveLife", RpcTarget.All, bulletPhotonViewId);
+                }
+            }
         }
     }
 }

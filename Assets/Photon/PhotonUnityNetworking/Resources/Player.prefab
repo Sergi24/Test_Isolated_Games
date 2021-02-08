@@ -1244,7 +1244,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   codesToIgnore:
   - {fileID: 1297404447600490240}
-  - {fileID: -4323541704324487849}
   - {fileID: 1251902107613438180}
 --- !u!114 &1297404447600490240
 MonoBehaviour:
@@ -1357,7 +1356,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4109463256039559963}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
   m_Name: 

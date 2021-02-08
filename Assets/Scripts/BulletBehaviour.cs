@@ -10,7 +10,10 @@ public class BulletBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Invoke("DestroyBullet", 2);
+        if (GetComponent<PhotonView>().IsMine)
+        {
+            Invoke("DestroyBullet", 2);
+        }
     }
 
     void DestroyBullet()
@@ -25,11 +28,11 @@ public class BulletBehaviour : MonoBehaviour
         //speed += acceleration * Time.deltaTime;
     }
 
-    void OnTriggerEnter2D(Collider2D collider)
+    /*void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.tag == "Player")
         {
             PhotonNetwork.Destroy(gameObject);
         }
-    }
+    }*/
 }

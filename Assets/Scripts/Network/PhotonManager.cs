@@ -30,7 +30,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     public bool CanCreateRoom()
     {
-        return PhotonNetwork.CurrentLobby != null;
+        return PhotonNetwork.IsConnectedAndReady && PhotonNetwork.CurrentLobby != null;
     }
 
     public override void OnJoinedRoom()

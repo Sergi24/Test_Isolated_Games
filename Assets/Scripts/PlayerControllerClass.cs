@@ -4,12 +4,14 @@ using UnityEngine.InputSystem;
 using UnityEngine;
 using System;
 using Photon.Pun;
+using UnityEngine.UI;
 
 public class PlayerControllerClass : MonoBehaviour
 {
     PlayerControls controls;
     public float movementSpeed;
     public float limitMoveX, limitMoveY;
+    public GameObject textYou;
 
     private GameObject currentPistol;
     private Vector2 move, aim;
@@ -27,6 +29,7 @@ public class PlayerControllerClass : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        textYou.SetActive(true);
         currentPistol = PhotonNetwork.Instantiate("Pistol", transform.position, Quaternion.identity);
         currentPistol.GetComponent<PistolBehaviour>().SetPlayer(gameObject);
 

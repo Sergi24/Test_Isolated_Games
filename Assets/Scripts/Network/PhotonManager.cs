@@ -7,6 +7,7 @@ using UnityEngine;
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
     GameObject player;
+    GameObject otherPlayer;
 
     void Awake()
     {
@@ -37,6 +38,11 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     {
         player = PhotonNetwork.Instantiate("Player", new Vector2(0, 0), Quaternion.identity);
     }
+
+    /*public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        otherPlayer = PhotonNetwork.GetPhotonView(newPlayer.ActorNumber).gameObject;
+    }*/
 
     public void LeaveRoom()
     {

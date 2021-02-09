@@ -8,12 +8,18 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 {
     GameObject player;
     GameObject otherPlayer;
+    int numPlayer;
 
     void Awake()
     {
         PhotonNetwork.ConnectUsingSettings();
 
         PhotonNetwork.AutomaticallySyncScene = true;
+    }
+
+    void Update()
+    {
+
     }
 
     public override void OnConnectedToMaster()
@@ -37,11 +43,35 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         player = PhotonNetwork.Instantiate("Player", new Vector2(0, 0), Quaternion.identity);
+        numPlayer = PhotonNetwork.CurrentRoom.PlayerCount;
+        PhotonView playerPhotonView = player.GetComponent<PhotonView>();
+        playerPhotonView.RPC("RPCSetOtherPlayer", RpcTarget.OthersBuffered, playerPhotonView.ViewID);
+    }
+
+    public GameObject GetPlayer()
+    {
+        return player;
+    }
+
+    public int GetNumPlayer()
+    {
+        return numPlayer;
+    }
+
+    public GameObject GetOtherPlayer()
+    {
+        return otherPlayer;
+    }
+
+    public void SetOtherPlayer(GameObject otherPlayer)
+    {
+        this.otherPlayer = otherPlayer;
     }
 
     /*public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        otherPlayer = PhotonNetwork.GetPhotonView(newPlayer.ActorNumber).gameObject;
+        otherPlayer = PhotonNetwork.GetPhotonView(newPlayer.).gameObject;
+        Debug.Log("Other Player " + otherPlayer);
     }*/
 
     public void LeaveRoom()

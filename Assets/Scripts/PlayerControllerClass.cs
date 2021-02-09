@@ -32,7 +32,7 @@ public class PlayerControllerClass : MonoBehaviour
         textYou.SetActive(true);
         currentPistol = PhotonNetwork.Instantiate("Pistol", transform.position, Quaternion.identity);
         currentPistol.GetComponent<PistolBehaviour>().SetPlayer(gameObject);
-
+        
         controls.Gameplay.Shot.performed += ctx => currentPistol.GetComponent<PistolBehaviour>().Shot();
     }
 

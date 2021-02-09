@@ -43,10 +43,13 @@ public class LifeManager : MonoBehaviour
             PhotonNetwork.Destroy(bulletPhotonView);
         }
 
-        //instantiate explosion
-        Instantiate(explosion, hitPosition, Quaternion.identity);
-
         life -= 1;
+
+        if (life > 0)
+        {
+            //instantiate explosion
+            Instantiate(explosion, hitPosition, Quaternion.identity);
+        }
 
         if (life == 2) setHeartsColor(true, true, false);
         else if (life == 1) setHeartsColor(true, false, false);

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 enum EGameState
 {
@@ -13,11 +14,12 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public GameObject mainMenu, gameOver;
+    public GameObject connectingToServer, mainMenu, gameOver;
     public PhotonManager photonManager;
+    public Text textGameOver;
 
     PlayerControls controls;
-    private EGameState state;
+    EGameState state;
 
     void Awake()
     {
@@ -33,11 +35,19 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1;
         state = EGameState.menu;
+        controls.Menu.Disable();
+        Invoke("ActivateMenuControls", 1);
         controls.Menu.Enable();
+        connectingToServer.SetActive(false);
         mainMenu.SetActive(true);
         gameOver.SetActive(false);
 
         photonManager.LeaveRoom();
+    }
+
+    void ActivateMenuControls()
+    {
+        controls.Menu.Enable();
     }
 
     void GameplayMode()
@@ -47,6 +57,7 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             state = EGameState.gameplay;
             controls.Menu.Disable();
+            connectingToServer.SetActive(false);
             mainMenu.SetActive(false);
             gameOver.SetActive(false);
 
@@ -54,13 +65,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void GameOverMode()
+    public void GameOverMode(bool win)
     {
         Time.timeScale = 0f;
         state = EGameState.gameover;
         controls.Menu.Enable();
+        connectingToServer.SetActive(false);
         mainMenu.SetActive(false);
         gameOver.SetActive(true);
+
+        if (win) textGameOver.text = "YOU WIN!";
+        else textGameOver.text = "You Lose";
     }
 
     void AnyButton()

@@ -13,13 +13,12 @@ public class PistolBehaviour : MonoBehaviour
     public float pistolRotationSpeed;
 
     private LineRenderer lineRenderer;
-    private double pistolAngle;
+    private double pistolAngle = 0;
     private GameObject player;
 
     // Start is called before the first frame update
     void Start()
     {
-        pistolAngle = 0;
         lineRenderer = GetComponent<LineRenderer>();
     }
 
@@ -99,7 +98,7 @@ public class PistolBehaviour : MonoBehaviour
                 //Debug.Log(new Vector2((float)pistolAngle, (float)angleDestination));
             }
 
-            GetComponent<PhotonView>().RPC("RPCSetPistolAngle", RpcTarget.Others, pistolAngle);
+            GetComponent<PhotonView>().RPC("RPCSetPistolAngle", RpcTarget.OthersBuffered, pistolAngle);
         }
     }
 

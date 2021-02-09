@@ -7,17 +7,17 @@
             "actions": [
                 {
                     "name": "Move",
-                    "type": "Value",
+                    "type": "Button",
                     "id": "bdec1946-f60f-4432-bd1f-c005ffde2459",
-                    "expectedControlType": "",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
                 },
                 {
                     "name": "Aim",
-                    "type": "Value",
+                    "type": "Button",
                     "id": "b1035354-8876-447f-bb4a-c58cb89b41f8",
-                    "expectedControlType": "",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
                 },
@@ -84,17 +84,6 @@
                     "name": "",
                     "id": "f78e3825-846b-4c85-8db9-9fc8550b155e",
                     "path": "<Gamepad>/dpad",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "AnyButton",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f3fcb2df-66c9-463f-ae72-408eea654f65",
-                    "path": "<Gamepad>/rightStick",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

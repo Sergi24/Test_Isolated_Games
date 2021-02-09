@@ -9,6 +9,7 @@ public class LifeManager : MonoBehaviour
     public Sprite heart;
     public Color heartInitialColor;
     public GameObject heartPosition1, heartPosition2, heartPosition3;
+    public GameObject explosion;
 
     private GameObject lastBulletHit;
 
@@ -33,24 +34,26 @@ public class LifeManager : MonoBehaviour
     }
 
     [PunRPC]
-    void RPCRemoveLife(int photonView)
+    void RPCRemoveLife(int bulletPhotonViewId, Vector3 hitPosition)
     {
-        PhotonView bulletPhotonView = PhotonNetwork.GetPhotonView(photonView);
+        //destroy bullet
+        PhotonView bulletPhotonView = PhotonNetwork.GetPhotonView(bulletPhotonViewId);
         if (bulletPhotonView != null && bulletPhotonView.IsMine)
         {
             PhotonNetwork.Destroy(bulletPhotonView);
         }
 
-        life -= 1;
+        //instantiate explosion
+        Instantiate(explosion, hitPosition, Quaternion.identity);
 
-        Debug.Log("life " + life);
+        life -= 1;
 
         if (life == 2) setHeartsColor(true, true, false);
         else if (life == 1) setHeartsColor(true, false, false);
         else if (life <= 0)
         {
             setHeartsColor(false, false, false);
-            GameManager.instance.GameOverMode();
+            GameManager.instance.GameOverMode(!GetComponent<PhotonView>().IsMine);
         }
     }
 
@@ -64,10 +67,9 @@ public class LifeManager : MonoBehaviour
                 {
                     lastBulletHit = collider.gameObject;
 
-                    Debug.Log("COLLIDER LIFE MANAGER");
                     PhotonView PV = GetComponent<PhotonView>();
                     int bulletPhotonViewId = collider.gameObject.GetComponent<PhotonView>().ViewID;
-                    PV.RPC("RPCRemoveLife", RpcTarget.All, bulletPhotonViewId);
+                    PV.RPC("RPCRemoveLife", RpcTarget.All, bulletPhotonViewId, transform.position);
                 }
             }
         }

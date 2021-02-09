@@ -68,12 +68,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         this.otherPlayer = otherPlayer;
     }
 
-    /*public override void OnPlayerEnteredRoom(Player newPlayer)
-    {
-        otherPlayer = PhotonNetwork.GetPhotonView(newPlayer.).gameObject;
-        Debug.Log("Other Player " + otherPlayer);
-    }*/
-
     public void LeaveRoom()
     {
         if (PhotonNetwork.CurrentRoom != null) PhotonNetwork.LeaveRoom();
